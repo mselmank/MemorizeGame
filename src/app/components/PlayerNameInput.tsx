@@ -1,44 +1,62 @@
-import React, { useState } from "react";
+"use client";
 
-interface PlayerNameInputProps {
-  onPlayerNameSubmit: (name: string) => void;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const PlayerNameInput: React.FC<PlayerNameInputProps> = ({
-  onPlayerNameSubmit,
-}) => {
-  const [inputName, setInputName] = useState("");
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import useLocalStorageName from "../hooks/useLocalStorageName";
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onPlayerNameSubmit(inputName);
-    console.log("🚀 ~ inputName:", inputName);
-  };
+const FormSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+});
+
+export function PlayerNameInput() {
+  const [name, saveName] = useLocalStorageName();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    saveName(data.username);
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label
-        className="group relative inline-block text-sm font-medium text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-        htmlFor="playerName"
-      >
-        Enter your name:
-      </label>
-      <input
-        className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-        type="text"
-        id="playerName"
-        value={inputName}
-        onChange={(e) => setInputName(e.target.value)}
-        required
-      />
-      <button
-        type="submit"
-        className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-      >
-        Start Game{" "}
-      </button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Start Game</Button>
+      </form>
+    </Form>
   );
-};
-
-export default PlayerNameInput;
+}
