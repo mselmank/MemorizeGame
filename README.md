@@ -1,12 +1,12 @@
 # Memorize Game Challenge
 
-📦  #### Run Locally ####  📦
-                                                              
-1- ## Clone repo🚀
+Run Locally 📦
+
+1- Clone repo 🃏
 
     $ git clone https://github.com/mselmank/MemorizeGame.git
  
-2- ## Run Frontend🚀          
+2- ## Run Frontend  🚀     
           
         # open new terminal
         $ npm i
