@@ -22,7 +22,10 @@ const Board: React.FC<BoardProps> = ({ data, isLoading }) => {
     const image = data[imageIndex];
 
     return (
-      <div key={colIndex} className="flex-1 border border-gray-300  h-32">
+      <div
+        key={colIndex}
+        className="flex-1  border-8  border-gray-100  h-36 w-36"
+      >
         {isLoading ? (
           <div>Cargando...</div>
         ) : image ? (
@@ -32,7 +35,7 @@ const Board: React.FC<BoardProps> = ({ data, isLoading }) => {
             onError={(e) => {
               e.currentTarget.src = image.placeholderUrl;
             }}
-            className="w-32 h-32 object-cover"
+            className="w-36 h-32 object-cover"
           />
         ) : (
           <div className="text-4xl font-bold text-center flex items-center justify-center h-full">
