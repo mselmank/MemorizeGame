@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PlayerNameInput } from "./components/PlayerNameInput";
 import useLocalStorageName from "./hooks/useLocalStorageName";
 import Board from "./components/Board";
-import { data } from "./data/Images";
+import { Data } from "./data/Images";
 export default function Home() {
   const [name, saveName] = useLocalStorageName();
 
@@ -13,8 +13,9 @@ export default function Home() {
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <h3>{name}</h3>
           <div>
-            {/* <PlayerNameInput /> */}
-            <Board data={data} isLoading={false} />
+            {Data.map((data, index) => {
+              return <Board key={index} data={[data.url]} isLoading={false} />;
+            })}
           </div>
         </div>
       </main>

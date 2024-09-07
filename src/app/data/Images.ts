@@ -1,4 +1,4 @@
-export const data = [
+export const Data = [
   {
     url: "https://challenge-uno.vercel.app/images/bear.jpg",
     uuid: "dbefa1ab-adaf-489c-957b-959e0f5c61f9",
