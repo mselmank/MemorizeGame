@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import { PlayerNameInput } from "./components/PlayerNameInput";
 import useLocalStorageName from "./hooks/useLocalStorageName";
-
+import Board from "./components/Board";
+import { data } from "./data/Images";
 export default function Home() {
   const [name, saveName] = useLocalStorageName();
 
@@ -13,8 +13,8 @@ export default function Home() {
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <h3>{name}</h3>
           <div>
-            {/* ... otros componentes ... */}
-            <PlayerNameInput />
+            {/* <PlayerNameInput /> */}
+            <Board data={data} isLoading={false} />
           </div>
         </div>
       </main>
