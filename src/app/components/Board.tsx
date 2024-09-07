@@ -5,6 +5,7 @@ interface ImageData {
   uuid: string;
   title: string;
   content_type: string;
+  placeholderUrl: string;
 }
 
 interface BoardProps {
@@ -21,7 +22,7 @@ const Board: React.FC<BoardProps> = ({ data, isLoading }) => {
     const image = data[imageIndex];
 
     return (
-      <td key={colIndex} className="border border-gray-300 p-1">
+      <div key={colIndex} className="flex-1 border border-gray-300  h-32">
         {isLoading ? (
           <div>Cargando...</div>
         ) : image ? (
@@ -29,29 +30,27 @@ const Board: React.FC<BoardProps> = ({ data, isLoading }) => {
             src={image.url}
             alt={image.title}
             onError={(e) => {
-              e.currentTarget.src = image.url;
+              e.currentTarget.src = image.placeholderUrl;
             }}
             className="w-32 h-32 object-cover"
           />
         ) : (
-          <div className="text-4xl font-bold text-center">?</div>
+          <div className="text-4xl font-bold text-center flex items-center justify-center h-full">
+            ?
+          </div>
         )}
-      </td>
+      </div>
     );
   };
 
   return (
-    <table className="w-full table-auto border-collapse">
-      <tbody>
-        {[...Array(rows)].map((_, rowIndex) => (
-          <tr key={rowIndex} className="h-32">
-            {[...Array(cols)].map((_, colIndex) =>
-              renderCell(rowIndex, colIndex)
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="grid grid-cols-6 gap-2">
+      {[...Array(rows * cols)].map((_, index) => {
+        const rowIndex = Math.floor(index / cols);
+        const colIndex = index % cols;
+        return renderCell(rowIndex, colIndex);
+      })}
+    </div>
   );
 };
 
