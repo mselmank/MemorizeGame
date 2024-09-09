@@ -23,6 +23,8 @@ const Board: FC<BoardProps> = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [solved, setSolved] = useState<number[]>([]);
+  const [hit, setHit] = useState<number>(0);
+  const [miss, setMiss] = useState<number>(0);
 
   const generateDeck = (): Card[] => {
     const Cards =
@@ -43,12 +45,17 @@ const Board: FC<BoardProps> = () => {
     setCards(generateDeck());
     setFlipped([]);
     setSolved([]);
+    setHit(0);
+    setMiss(0);
   };
 
   const checkForMatch = () => {
     const [firstCard, secondCard] = flipped;
     if (cards[firstCard] === cards[secondCard]) {
       setSolved([...solved, ...flipped]);
+      setHit(hit + 1);
+    } else {
+      setMiss(miss + 1);
     }
     setFlipped([]);
   };
@@ -73,6 +80,8 @@ const Board: FC<BoardProps> = () => {
       {error && <div>Error al cargar las imágenes</div>}
       {!isLoadingSWR && !error && (
         <div>
+          <p>Aciertos: {hit}</p> {/* Mostrar el contador de aciertos */}
+          <p>Errores: {miss}</p> {/* Mostrar el contador de errores */}
           <button onClick={resetGame}>Reiniciar juego</button>{" "}
           <div className="grid grid-cols-4 gap-5">
             {cards.map((card, index) => (
