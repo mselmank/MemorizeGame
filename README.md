@@ -18,10 +18,12 @@ Run Locally 📦
 
 ## Built with 🛠️
 
-* [HTML5 and CSS3]: Taildwind Css.
-* [React]:Components, Props, Events, Hooks.
+* [HTML5 and CSS3]: Taildwind Css, shadcn/ui.
+* [React]:Components, Props, Events, Hooks, Next.js, SWR
+React Hooks for Data Fetching,Typescript.
 * [Development]: ESLint,Babel,Git,Github.
-* [Bundler]: Turbopack | Next.js
+* [Bundler]: Turbopack | Next.js.
+* [Unit Test]: React testing-library, jest.
 * [Deployment]: Vercel
   
 
