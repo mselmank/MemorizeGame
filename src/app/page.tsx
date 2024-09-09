@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { PlayerNameInput } from "./components/PlayerNameInput";
-import Board from "./components/Board";
+import Board from "./components/Board/Board";
 import useLocalStorageName from "./hooks/useLocalStorageName";
+import { PlayerNameInput } from "./components/PlayerNameInput/PlayerNameInput";
 
 export default function Home() {
   const [name] = useLocalStorageName("name", "");

@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useLocalStorageName from "../hooks/useLocalStorageName";
+import useLocalStorageName from "@/app/hooks/useLocalStorageName";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
