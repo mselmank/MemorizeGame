@@ -23,8 +23,12 @@ const FormSchema = z.object({
   }),
 });
 
-export function PlayerNameInput() {
-  const [name, saveName] = useLocalStorageName();
+export function PlayerNameInput({
+  onSubmit,
+}: {
+  onSubmit: (username: string) => void;
+}) {
+  const [, saveName] = useLocalStorageName();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -32,13 +36,17 @@ export function PlayerNameInput() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function handleSubmit(data: z.infer<typeof FormSchema>) {
     saveName(data.username);
+    onSubmit(data.username);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="w-2/3 space-y-6"
+      >
         <FormField
           control={form.control}
           name="username"
@@ -46,16 +54,14 @@ export function PlayerNameInput() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Start Game</Button>
+        <Button type="submit">Save name</Button>
       </form>
     </Form>
   );
