@@ -23,22 +23,16 @@ const FormSchema = z.object({
   }),
 });
 
-export function PlayerNameInput({
-  onSubmit,
-}: {
-  onSubmit: (username: string) => void;
-}) {
-  const [, saveName] = useLocalStorageName();
+export function PlayerNameInput() {
+  const [name, setName] = useLocalStorageName("name", "");
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       username: "",
     },
   });
-
   function handleSubmit(data: z.infer<typeof FormSchema>) {
-    saveName(data.username);
-    onSubmit(data.username);
+    setName(data.username);
   }
 
   return (

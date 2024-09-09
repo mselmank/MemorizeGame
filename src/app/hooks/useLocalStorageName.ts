@@ -1,10 +1,16 @@
 import useSWR from "swr";
 
-function useCachedName() {
-  const { data: name, mutate: setName } = useSWR("userName", {
-    fallbackData: "",
+function useLocalStorageName(key: string, initialValue: any) {
+  const { data: name, mutate } = useSWR(key, {
+    fallbackData: initialValue,
+    revalidateOnFocus: false,
   });
+
+  const setName = (newName: string) => {
+    localStorage.setItem(key, newName);
+    mutate(newName);
+  };
 
   return [name, setName];
 }
-export default useCachedName;
+export default useLocalStorageName;

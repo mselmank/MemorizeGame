@@ -26,6 +26,9 @@ const Board: FC<BoardProps> = () => {
   const [solved, setSolved] = useState<number[]>([]);
   const [hit, setHit] = useState<number>(0);
   const [miss, setMiss] = useState<number>(0);
+  const [imagesLoaded, setImagesLoaded] = useState<{
+    [url: string]: HTMLImageElement;
+  }>({});
 
   const generateDeck = (): Card[] => {
     const Cards =
@@ -41,6 +44,24 @@ const Board: FC<BoardProps> = () => {
       setCards(generateDeck());
     }
   }, [data, isLoadingSWR, error]);
+  useEffect(() => {
+    const preloadImages = async () => {
+      const loadedImages: { [url: string]: HTMLImageElement } = {};
+      await Promise.all(
+        cards.map(async (card) => {
+          const img = new Image();
+          img.src = card.url;
+          await new Promise((resolve) => {
+            img.onload = resolve;
+          });
+          loadedImages[card.url] = img;
+        })
+      );
+      setImagesLoaded(loadedImages);
+    };
+
+    preloadImages();
+  }, [cards]);
 
   const resetGame = () => {
     setCards(generateDeck());

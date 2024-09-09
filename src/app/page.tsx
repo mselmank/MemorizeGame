@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { PlayerNameInput } from "./components/PlayerNameInput";
-import useCachedName from "./hooks/useLocalStorageName";
 import Board from "./components/Board";
+import useLocalStorageName from "./hooks/useLocalStorageName";
 
 export default function Home() {
-  const [name, setName] = useCachedName();
-  const [showNameInput, setShowNameInput] = useState(!name);
+  const [name] = useLocalStorageName("name", "");
+  const [showNameInput, setShowNameInput] = useState(true);
 
   useEffect(() => {
     if (name) {
@@ -17,17 +17,18 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header>
-        <h3 className="text-2xl font-mono">{name || "Bienvenido"}</h3>{" "}
+        <h3 className="text-3xl font-mono">
+          {typeof name === "string" ? name : "Bienvenido"}
+        </h3>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        {showNameInput && (
-          <div>
-            <PlayerNameInput onSubmit={setName} />{" "}
+        {showNameInput ? (
+          <div className="flex justify-center">
+            <PlayerNameInput />
           </div>
-        )}
-        {!showNameInput && (
+        ) : (
           <div className="flex gap-4 items-center flex-col sm:flex-row">
-            <div>
+            <div className="flexjustify-center">
               <Board data={[]} isLoading={false} />
             </div>
           </div>
