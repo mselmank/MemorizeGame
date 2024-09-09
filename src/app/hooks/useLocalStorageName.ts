@@ -1,20 +1,10 @@
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 
-function useLocalStorageName() {
-  const [name, saveName] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("name") || "";
-    }
-    return "";
+function useCachedName() {
+  const { data: name, mutate: setName } = useSWR("userName", {
+    fallbackData: "",
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("name", name);
-    }
-  }, [name]);
-
-  return [name, saveName];
+  return [name, setName];
 }
-
-export default useLocalStorageName;
+export default useCachedName;
