@@ -38,6 +38,11 @@ const Board: FC<BoardProps> = () => {
     const deck = [...Cards, ...Cards];
     return deck.sort(() => Math.random() - 0.5);
   };
+  useEffect(() => {
+    if (hit === 20) {
+      alert("¡Felicidades! Has ganado el juego.");
+    }
+  }, [hit]);
 
   useEffect(() => {
     if (!isLoadingSWR && data && !error) {
