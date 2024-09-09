@@ -52,7 +52,9 @@ export function PlayerNameInput({
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>
+                <h1 className="font-mono text-1xl">Dime tu nombre</h1>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -61,7 +63,9 @@ export function PlayerNameInput({
             </FormItem>
           )}
         />
-        <Button type="submit">Save name</Button>
+        <div className="flex justify-center">
+          <Button type="submit">Comenzar</Button>
+        </div>
       </form>
     </Form>
   );

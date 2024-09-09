@@ -77,15 +77,23 @@ const Board: FC<BoardProps> = () => {
 
   return (
     <div>
-      {isLoadingSWR && <div>Cargando...</div>}
-      {error && <div>Error al cargar las imágenes</div>}
+      {isLoadingSWR && (
+        <div>
+          <h3 className="text-2xl font-mono">Cargando...</h3>
+        </div>
+      )}
+      {error && (
+        <div className="text-2xl font-mono">
+          <h3>Error al cargar las imágenes</h3>
+        </div>
+      )}
       {!isLoadingSWR && !error && (
         <div>
           <div className="flex justify-center gap-2 mb-20">
-            <div>
+            <div className="p-8">
               <h1 className="text-2xl font-mono">Aciertos: {hit}</h1>
             </div>
-            <div>
+            <div className="p-8">
               <h1 className="text-2xl font-mono">Errores: {miss}</h1>
             </div>
           </div>
@@ -94,7 +102,7 @@ const Board: FC<BoardProps> = () => {
             {cards.map((card, index) => (
               <div
                 key={index}
-                className={`flex justify-center  font-mono hover:animate-background rounded-l bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-l transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s] dark:shadow-gray-700/25 ${
+                className={`flex justify-center  font-mono hover:animate-background rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-l transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s] dark:shadow-gray-700/25 ${
                   flipped.includes(index) || solved.includes(index)
                     ? ""
                     : "bg-gray-200"
@@ -105,7 +113,7 @@ const Board: FC<BoardProps> = () => {
                   <img
                     src={card.url}
                     alt="Memory Card"
-                    className="w-32 h-36 object-cover"
+                    className="w-32 h-36 object-cover  rounded-xl "
                   />
                 ) : (
                   <div className="w-32 h-36 flex items-center justify-center">
