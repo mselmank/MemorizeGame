@@ -26,7 +26,6 @@ const Board: FC<BoardProps> = () => {
   const [solved, setSolved] = useState<number[]>([]);
   const [hit, setHit] = useState<number>(0);
   const [miss, setMiss] = useState<number>(0);
-  const [gameWon, setGameWon] = useState(false);
 
   const generateDeck = (): Card[] => {
     const Cards =
@@ -63,9 +62,6 @@ const Board: FC<BoardProps> = () => {
   };
 
   useEffect(() => {
-    if (solved.length === cards.length / 2) {
-      setGameWon(true);
-    }
     if (flipped.length === 2) {
       setTimeout(() => {
         checkForMatch();
