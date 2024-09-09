@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function useLocalStorageName() {
-  const [name, setName] = useState<string | null>(() => {
-    const storedName = localStorage.getItem("name");
-    return storedName ? storedName : null;
+  const [name, saveName] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("name") || "";
+    }
+    return "";
   });
 
-  const saveName = (newName: string) => {
-    localStorage.setItem("name", newName);
-    setName(newName);
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("name", name);
+    }
+  }, [name]);
 
-  return [name, saveName] as const;
+  return [name, saveName];
 }
 
 export default useLocalStorageName;
