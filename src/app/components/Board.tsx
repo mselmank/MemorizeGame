@@ -1,44 +1,59 @@
 "use client";
-
+import useSWR from "swr";
 import React, { FC, useEffect, useState } from "react";
 
-interface ImageData {
-  url: string;
-  uuid: string;
-  title: string;
-  content_type: string;
-}
-
 interface BoardProps {
-  data: string[];
+  data: [];
   isLoading: boolean;
 }
+interface Card {
+  title: string;
+  url: string;
+}
 
-const Board: FC<BoardProps> = ({ data, isLoading }) => {
-  console.log("🚀 ~ data:", data);
-  const [cards, setCards] = useState<string[]>([]);
+const fetcher = (url: string | URL | Request) =>
+  fetch(url).then((res) => res.json());
+
+const Board: FC<BoardProps> = () => {
+  const {
+    data,
+    error,
+    isLoading: isLoadingSWR,
+  } = useSWR("https://challenge-uno.vercel.app/api/images", fetcher);
+  const [cards, setCards] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [solved, setSolved] = useState<number[]>([]);
 
-  const generateDeck = () => {
-    const Cards = data.map((item) => item);
+  const generateDeck = (): Card[] => {
+    const Cards =
+      data && Array.isArray(data)
+        ? data.map((item) => ({ title: item.title, url: item.url }))
+        : [];
     const deck = [...Cards, ...Cards];
     return deck.sort(() => Math.random() - 0.5);
   };
+
+  useEffect(() => {
+    if (!isLoadingSWR && data && !error) {
+      setCards(generateDeck());
+    }
+  }, [data, isLoadingSWR, error]);
+
   const resetGame = () => {
     setCards(generateDeck());
     setFlipped([]);
     setSolved([]);
   };
-  useEffect(() => {
-    const checkForMatch = () => {
-      const [firstCard, secondCard] = flipped;
-      if (cards[firstCard] === cards[secondCard]) {
-        setSolved([...solved, ...flipped]);
-      }
-      setFlipped([]);
-    };
 
+  const checkForMatch = () => {
+    const [firstCard, secondCard] = flipped;
+    if (cards[firstCard] === cards[secondCard]) {
+      setSolved([...solved, ...flipped]);
+    }
+    setFlipped([]);
+  };
+
+  useEffect(() => {
     if (flipped.length === 2) {
       setTimeout(() => {
         checkForMatch();
@@ -51,31 +66,41 @@ const Board: FC<BoardProps> = ({ data, isLoading }) => {
       setFlipped([...flipped, index]);
     }
   };
+
   return (
     <div>
-      <div className="grid grid-cols-4 gap-5">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className={`flex justify-center text-4xl font-bold ${
-              flipped.includes(index) || solved.includes(index) ? "" : ""
-            }`}
-            onClick={() => handleClick(index)}
-          >
-            {flipped.includes(index) || solved.includes(index) ? (
-              <img
-                src={`/memory-cards/${card}.webp`}
-                alt="Memory Card"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                ?
+      {isLoadingSWR && <div>Cargando...</div>}
+      {error && <div>Error al cargar las imágenes</div>}
+      {!isLoadingSWR && !error && (
+        <div>
+          <button onClick={resetGame}>Reiniciar juego</button>{" "}
+          <div className="grid grid-cols-4 gap-5">
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className={`flex justify-center text-4xl font-bold ${
+                  flipped.includes(index) || solved.includes(index)
+                    ? ""
+                    : "bg-gray-200"
+                }`}
+                onClick={() => handleClick(index)}
+              >
+                {flipped.includes(index) || solved.includes(index) ? (
+                  <img
+                    src={card.url}
+                    alt="Memory Card"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <h3 className="text-4xl font-bold text-red-400">?</h3>
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

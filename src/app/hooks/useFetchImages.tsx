@@ -1,27 +1,20 @@
-import { Key } from "react";
-import useSWR from "swr";
+// import useSWR from "swr";
 
-const useFetchImages = () => {
-  const url = "https://challenge-uno.vercel.app/api/images";
+// const useFetchImages = () => {
+//   const url = "https://challenge-uno.vercel.app/api/images";
 
-  const fetcher = (url: string | URL | Request) =>
-    fetch(url).then((res) => res.json());
+//   const fetcher = (url: string | URL | Request) =>
+//     fetch(url).then((res) => res.json());
 
-  const { data, error, isLoading } = useSWR(url, fetcher);
-  // console.log("🚀 ~ useFetchImages ~ data:", data);
+//   const swrResult = useSWR(url, fetcher);
 
-  if (error) return <div>An error occurred while fetching images.</div>;
-  if (isLoading) return <div>''</div>;
+//   if (swrResult.error)
+//     return <div>An error occurred while fetching images.</div>;
+//   if (swrResult.isLoading) return <div>Loading...</div>;
 
-  return (
-    <div>
-      {data.map(
-        (imageUrl: string | undefined, index: Key | null | undefined) => (
-          <img key={index} src={imageUrl} alt={`Image ${index}`} />
-        )
-      )}
-    </div>
-  );
-};
+//   const { data, error, isLoading } = swrResult;
 
-export default useFetchImages;
+//   return { data, error, isLoading };
+// };
+
+// export default useFetchImages;
