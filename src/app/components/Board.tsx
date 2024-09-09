@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import React, { FC, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface BoardProps {
   data: [];
@@ -25,6 +26,7 @@ const Board: FC<BoardProps> = () => {
   const [solved, setSolved] = useState<number[]>([]);
   const [hit, setHit] = useState<number>(0);
   const [miss, setMiss] = useState<number>(0);
+  const [gameWon, setGameWon] = useState(false);
 
   const generateDeck = (): Card[] => {
     const Cards =
@@ -61,6 +63,9 @@ const Board: FC<BoardProps> = () => {
   };
 
   useEffect(() => {
+    if (solved.length === cards.length / 2) {
+      setGameWon(true);
+    }
     if (flipped.length === 2) {
       setTimeout(() => {
         checkForMatch();
@@ -80,14 +85,20 @@ const Board: FC<BoardProps> = () => {
       {error && <div>Error al cargar las imágenes</div>}
       {!isLoadingSWR && !error && (
         <div>
-          <p>Aciertos: {hit}</p> {/* Mostrar el contador de aciertos */}
-          <p>Errores: {miss}</p> {/* Mostrar el contador de errores */}
-          <button onClick={resetGame}>Reiniciar juego</button>{" "}
-          <div className="grid grid-cols-4 gap-5">
+          <div className="flex justify-center gap-2 mb-20">
+            <div>
+              <h1 className="text-2xl font-mono">Aciertos: {hit}</h1>
+            </div>
+            <div>
+              <h1 className="text-2xl font-mono">Errores: {miss}</h1>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-5 gap-4">
             {cards.map((card, index) => (
               <div
                 key={index}
-                className={`flex justify-center text-4xl font-bold ${
+                className={`flex justify-center  font-mono hover:animate-background rounded-l bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-l transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s] dark:shadow-gray-700/25 ${
                   flipped.includes(index) || solved.includes(index)
                     ? ""
                     : "bg-gray-200"
@@ -98,11 +109,11 @@ const Board: FC<BoardProps> = () => {
                   <img
                     src={card.url}
                     alt="Memory Card"
-                    className="w-full h-full object-cover"
+                    className="w-32 h-36 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <h3 className="text-4xl font-bold text-red-400">?</h3>
+                  <div className="w-32 h-36 flex items-center justify-center">
+                    <h3 className="text-9xl font-bold text-black">?</h3>
                   </div>
                 )}
               </div>
@@ -110,6 +121,11 @@ const Board: FC<BoardProps> = () => {
           </div>
         </div>
       )}
+      <div className="flex justify-center mt-10">
+        <Button className="p-8" onClick={resetGame}>
+          <h1 className="text-2xl font-mono">Reiniciar juego</h1>
+        </Button>{" "}
+      </div>
     </div>
   );
 };
