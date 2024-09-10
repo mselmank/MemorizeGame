@@ -26,7 +26,7 @@ const Board: FC<BoardProps> = () => {
   const [solved, setSolved] = useState<number[]>([]);
   const [hit, setHit] = useState<number>(0);
   const [miss, setMiss] = useState<number>(0);
-  const [imagesLoaded, setImagesLoaded] = useState<{
+  const [, setImagesLoaded] = useState<{
     [url: string]: HTMLImageElement;
   }>({});
 

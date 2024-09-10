@@ -24,7 +24,7 @@ const FormSchema = z.object({
 });
 
 export function PlayerNameInput() {
-  const [name, setName] = useLocalStorageName("name", "");
+  const [, setName] = useLocalStorageName("name", "");
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
