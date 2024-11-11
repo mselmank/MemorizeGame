@@ -20,7 +20,11 @@ const Board: FC<BoardProps> = () => {
     data,
     error,
     isLoading: isLoadingSWR,
-  } = useSWR("https://challenge-uno.vercel.app/api/images", fetcher);
+  } = useSWR("https://challenge-uno.vercel.app/api/images", fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
   const [cards, setCards] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [solved, setSolved] = useState<number[]>([]);

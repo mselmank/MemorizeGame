@@ -1,3 +1,5 @@
+//Este fue mi primer approach, luego decidi utilizar la libreria SWR de vercel.
+
 // import useSWR from "swr";
 
 // const useFetchImages = () => {
